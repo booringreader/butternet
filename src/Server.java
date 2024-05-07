@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import src.Server.ClientHandler;
+
 public class Server{
     private static ArrayList<ClientHandler> clients = new ArrayList<>(); // list to keep track of clients
     public static void main(String[] args) throws IOException {
@@ -15,7 +17,8 @@ public class Server{
 
         while(true){
             Socket clientSocket = serverSocket.accept(); // accept connections from clientsockets and create corresponding threads on server
-            
+                System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress() + ":" + clientSocket.getPort());
+
             // create thread
             /*
              * create object to handle client
@@ -26,6 +29,7 @@ public class Server{
              ClientHandler clientThread = new ClientHandler(clientSocket, clients);
              clients.add(clientThread);
              new Thread(clientThread).start(); // start() begins execution of thread; run() method of clienthandler object is invoked (when thread begins)
+             System.out.println("connection accepted");
         }
     }
 
