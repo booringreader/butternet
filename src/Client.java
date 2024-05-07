@@ -25,22 +25,12 @@ public class Client {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream())); // take input from server network through socket
             this.out = new PrintWriter(socket.getOutputStream(), true); // create output stream on server network
             this.onMessageReceived = onMessageReceived;
-            
-            // String input = "";
-            // while(!input.equals("exit")){ // until input from system is not exit i.e keyboard input is not exit
-            //     input = consoleInput.readLine(); // 
-            //     out.println(input); // send input from system to connection stream as output
-            //     System.out.println(in.readLine()); // send input from connection stream as output to system
-            // }
-
-            // out.close();
-            // in.close();
-            // consoleInput.close();
     }
         
     public void sendMessage(String msg){
         System.out.println("message sent");
             out.println(msg);
+            out.flush();
     }
         
     public void startClient(){
@@ -54,13 +44,5 @@ public class Client {
                     i.printStackTrace();
                 }
             }).start(); 
-    }   //catch(UnknownHostException e){
-        //     System.out.println("host not found" + e.getMessage());
-        // }catch(IOException i){
-        //     System.out.println("unknown error " + i.getMessage());
-        // }
-
-    // public static void main(String[] args){
-    //     Client client = new Client("127.0.0.1", 8000);
-    // }
+    }
 }
