@@ -2,11 +2,15 @@ package src;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class GUI extends JFrame{
     private JTextField textField; // field is to take input (single line of area)
@@ -25,11 +29,29 @@ public class GUI extends JFrame{
 
         textField = new JTextField();
         textField.addActionListener(new ActionListener(){ // new actionlistener class
-            public static void actionPerformed(ActionEvent e){ // method invoked when actionlistener class is called
+            public void actionPerformed(ActionEvent e){ // method invoked when actionlistener class is called
                 client.sendMessage(textField.getText()); // take input stream from textfield and send to client
                 textField.setText(""); // reset textfield to blank after send(event) is pressed(executed)
             }
         });
         add(textField, BorderLayout.SOUTH); // textfield is at the bottom of the window
+
+        try{
+            this.client = new Client("127.0.0.1", 8000, this::onMessageReceived);
+            client.startClient();
+        }catch(IOException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error Connecting Server", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+    }
+
+    private void onMessageReceived(String message){
+        SwingUtilities.invokeLater(() -> messageArea.append(message + "\n")); //lambda function
+    }
+    public static void main(String[] args){
+        SwingUtilities.invokeLater(() -> {
+            new GUI().setVisible(true);
+        });
     }
 }

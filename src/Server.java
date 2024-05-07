@@ -14,15 +14,14 @@ public class Server{
         System.out.println(".........Waiting for connections......."); // indicator of successful server setup
 
         while(true){
-            // accept connections from clientsockets and create corresponding threads on server
-            Socket clientSocket = serverSocket.accept();
+            Socket clientSocket = serverSocket.accept(); // accept connections from clientsockets and create corresponding threads on server
             
             // create thread
             /*
              * create object to handle client
              * add client to the list
-             * create thread
-             */
+             * create thread 
+            */
 
              ClientHandler clientThread = new ClientHandler(clientSocket, clients);
              clients.add(clientThread);
@@ -52,7 +51,7 @@ public class Server{
                 while((inputLine = in.readLine()) != null){ // read input stream, if not null
                     for(int i=0; i<clients.size(); i++){
                         ClientHandler oneclient = clients.get(i); // one client out of the list
-                        oneclient.out.print(inputLine); // print in the output stream of client (PrintWriter)
+                        oneclient.out.println(inputLine); // print in the output stream of client (PrintWriter)
                     }
                 }
             }catch(IOException e){
