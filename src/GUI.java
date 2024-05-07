@@ -3,10 +3,14 @@ package src;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
+import java.awt.Font;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -16,6 +20,7 @@ public class GUI extends JFrame{
     private JTextField textField; // field is to take input (single line of area)
     private JTextArea messageArea; // area is to display text, a lot of it, from different clients (multiple lines of area)
     private Client client;
+    private JButton exitButton;
 
     public GUI(){
         super("ButterNET"); // title of the window
@@ -35,6 +40,32 @@ public class GUI extends JFrame{
             }
         });
         add(textField, BorderLayout.SOUTH); // textfield is at the bottom of the window
+
+        // Styling variables
+      Color backgroundColor = new Color(240, 240, 240); // Light gray background
+      Color buttonColor = new Color(75, 75, 75); // Darker gray for buttons
+      Color textColor = new Color(50, 50, 50); // Almost black for text
+      Font textFont = new Font("Arial", Font.PLAIN, 14);
+      Font buttonFont = new Font("Arial", Font.BOLD, 12);
+
+      // Apply styles to the message area
+      messageArea = new JTextArea();
+      messageArea.setEditable(false);
+      messageArea.setBackground(backgroundColor);
+      messageArea.setForeground(textColor);
+      messageArea.setFont(textFont);
+      JScrollPane scrollPane = new JScrollPane(messageArea);
+      add(scrollPane, BorderLayout.CENTER);
+
+
+        // Initialize the exit button
+        exitButton = new JButton("Exit");
+        exitButton.addActionListener(e -> System.exit(0)); // Exit the application
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(textField, BorderLayout.CENTER);
+        bottomPanel.add(exitButton, BorderLayout.EAST);
+        add(bottomPanel, BorderLayout.SOUTH);
+
 
         try{
             this.client = new Client("127.0.0.1", 8000, this::onMessageReceived);
